@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公文列表</title>
+    <title>公文审批列表</title>
     <link rel="stylesheet" href="./css/list.css">
 </head>
 
@@ -14,19 +14,23 @@
     <div class="left">
         <!-- 用户信息 -->
         <div class="card">
-            <h3>用户:root</h3>
+            <h1>公文审批列表</h1>
         </div>
     </div>
+
+    <div class="msg"></div>
 
     <div class="right"></div>
 
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <script>
-        function getPaperList() {
+        function getNoPassList() {
+            let wait = 0;
+            let fail = 0;
             $.ajax({
                 type: "GET",
-                url: "/MangeSystem/list",
+                url: "/MangeSystem/fail",
                 success: function (body) {
                     //body就是个json数组,每个元素就是json数组,数组每个元素是json也就是js对象
                     let rightDiv = document.querySelector(".right");
@@ -44,11 +48,13 @@
                         let str = "";
                         if (paper.pass == "0") {
                             str = "[未通过审核]";
+                            fail += 1;
                         }
                         else if (paper.pass == "1") {
                             str = "[通过审核]";
                         } else {
                             str = "[未审核,请等待]";
+                            wait += 1;
                         }
 
                         let dataDiv = document.createElement("div");
@@ -70,13 +76,29 @@
 
                         rightDiv.appendChild(paperDiv);
                     }
+                    let msg = document.querySelector(".msg");
+
+                    let msgDiv = document.createElement("div");
+                    msgDiv.className = "msgDiv";
+
+                    let waitDiv = document.createElement("h2");
+                    waitDiv.className = "wait";
+                    waitDiv.innerHTML = "等待审核数目:" + wait;
+                    msgDiv.appendChild(waitDiv);
+
+                    let failDiv = document.createElement("h2");
+                    failDiv.className = "fail";
+                    failDiv.innerHTML = "审核未通过数目:" + fail;
+                    msgDiv.appendChild(failDiv);
+
+                    msg.appendChild(msgDiv);
                 },
                 error: function () {
                     alert("获取公文列表失败");
                 }
             });
         }
-        getPaperList();
+        getNoPassList();
     </script>
 
 </body>

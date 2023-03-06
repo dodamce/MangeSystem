@@ -39,7 +39,45 @@ public class PaperDAO {
         try {
             connection = Connect.getConnection();
             //desc 按照降序排列
-            String sql = "select * from mange.paper order by postTime desc ";
+            String sql = "select * from mange.paper where pass=1 order by postTime desc ";
+            statement = connection.prepareStatement(sql);
+
+            result = statement.executeQuery();
+
+            //变量结果集合
+            while (result.next()) {
+                Paper paper = new Paper();
+                paper.setPaperId(result.getInt("paperId"));
+                paper.setTitle(result.getString("title"));
+                //如果摘要太长了，进行截取
+                String content = result.getString("content");
+                if (content.length() > 50) {
+                    content = content.substring(0, 50) + "...";
+                }
+                paper.setContent(content);
+                paper.setUserId(result.getInt("userId"));
+                paper.setPostTime(result.getTimestamp("postTime"));
+                paper.setPass(result.getInt("pass"));
+                lists.add(paper);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            Connect.close(connection, statement, result);
+        }
+        return lists;
+    }
+
+    //获取所有未审核的公文
+    public List<Paper> selectAllNoPass() {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        List<Paper> lists = new ArrayList<>();
+        try {
+            connection = Connect.getConnection();
+            //desc 按照降序排列
+            String sql = "select * from mange.paper where pass=0 or pass=2 order by postTime desc ";
             statement = connection.prepareStatement(sql);
 
             result = statement.executeQuery();
