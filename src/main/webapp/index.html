@@ -14,6 +14,7 @@
             width: 2%;
         }
     </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <!-- 左侧个人信息 -->
     <div class="left">
         <!-- 用户信息 -->
@@ -24,20 +25,53 @@
 
         </div>
     </div>
-
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <!-- 检查登录状态 -->
-    <script src="./js/log.js"></script>
-
-    <script>
-        getUserInfo("index.html");
-    </script>
     <h1 align="center">欢迎来到企业资源管理系统</h1><br>
     <h2 align="center"><a href="/MangeSystem/official.html">公文申请</a></h2>
     <h2 align="center"><a href="/MangeSystem/list.html">公文列表查看</a></h2>
     <h2 align="center"><a href="/MangeSystem/list.html">邮箱发送</a></h2>
+    <h2 align="center"><a id="key" href="/MangeSystem/passList.html"></a></h2>
     <script>
+        //获取登录状态
+        function getUserInfo(pageName) {
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/log",
+                success: function (body) {
+                    //判断body是否合法
+                    if (body.id && body.id > 0) {
+                        //登录成功
+                        console.log("用户已经成功 用户名:" + body.name);
+                        //将用户名设置到对应位置
+                        if (pageName == "index.html") {
+                            changeUserMsg(body.name);
+                        }
+                        if (body.id == 1) {
 
+                            //root用户,主页显示审核选项
+                            let key = document.getElementById("key");
+                            // alert("DEBUG");
+                            key.innerHTML = "公文审核";
+                            key.href = "/MangeSystem/passList.html";
+                        }
+                    } else {
+                        //跳转到登录页面
+                        alert("请登录后访问");
+                        location.assign("/MangeSystem/log.html");
+                    }
+                },
+                error: function () {
+                    //跳转到登录页面
+                    location.assign("/ManegeSystem/log.html");
+                },
+            });
+        }
+        //更改页面信息
+        function changeUserMsg(userName) {
+            //根据获取到的信息修改用户信息
+            let user = document.querySelector(".card>h3");
+            user.innerHTML = userName;
+        }
+        getUserInfo("index.html");
     </script>
 </body>
 
