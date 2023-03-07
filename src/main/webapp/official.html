@@ -18,7 +18,7 @@
 <body>
     <script src="./js/log.js"></script>
     <div class="edit-body">
-        <form action="/MangeSystem/upload" method="post" style="height: 100%">
+        <form action="/MangeSystem/list" method="post" style="height: 100%">
             <div class="title">
                 <input type="text" placeholder="请输入公示标题" name="title" id="title" />
                 <input type="submit" value="发布公示" id="submit" />
@@ -32,6 +32,15 @@
             </div>
         </form>
     </div>
+
+    <script>
+        let editor = editormd("editor", {
+            width: "100%",
+            height: "calc(100%-50)",
+            path: "./editor.md/lib/",
+            saveHTMLToTextarea: true, //将用户在编辑器的内容同步到textarea上
+        }); 
+    </script>
 </body>
 
 </html>

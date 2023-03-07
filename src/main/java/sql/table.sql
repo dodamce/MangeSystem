@@ -3,7 +3,7 @@ create database if not exists mange;
 
 use mange;
 
--- 创建博客表
+-- 创建公示表
 drop table if exists user;
 
 create table user
