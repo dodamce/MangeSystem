@@ -1,0 +1,51 @@
+.edit-body {
+    width: 1000px;
+    height: calc(100%-50px);
+    margin: 0 auto;
+}
+
+.edit-body .title {
+    width: 100%;
+    height: 50px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-body .title #title {
+    width: 850px;
+    height: 40px;
+
+    /* border: none; */
+    outline: none;
+
+    font-size: 22px;
+    line-height: 40px;
+    padding-left: 10px;
+
+    /* background-color: rgba(255, 255, 255, 0.8); */
+    border-radius: 10px;
+}
+
+.edit-body .title #submit {
+    width: 100px;
+    height: 45px;
+    border-radius: 10px;
+
+    color: rgb(16, 16, 16);
+    /* background-color: rgba(253, 252, 251, 0.8); */
+    /* border: none; */
+    outline: none;
+    font-size: 18px;
+}
+
+.edit .title #submit:active {
+    background-color: #c3c0c0;
+}
+
+#editor {
+    border-radius: 10px;
+    background-color: rgba(250, 248, 248, 0.8);
+
+    opacity: 80%;
+}
