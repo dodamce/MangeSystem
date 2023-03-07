@@ -1,0 +1,21 @@
+.msg h2 {
+    display: block;
+    /* width: 140px; */
+    height: 40px;
+    margin: 0 auto;
+    border: 2px black solid;
+    color: black;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+
+    /* 过渡 */
+    transition: all 0.3s;
+}
+
+.msg {
+    height: 100%;
+    width: 250px;
+    /* background-color: aliceblue; */
+}

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/index.css">
     <title>企业资源管理系统主页</title>
 </head>
 
@@ -19,9 +20,8 @@
     <div class="left">
         <!-- 用户信息 -->
         <div class="card">
-            <h2>欢迎您</h2>
-            <h3></h3>
-            <!-- <img src="./img/root.jpg" alt="头像"> -->
+            <h3>欢迎您</h3>
+                <!-- <img src="./img/root.jpg" alt="头像"> -->
 
         </div>
     </div>
@@ -69,7 +69,7 @@
         function changeUserMsg(userName) {
             //根据获取到的信息修改用户信息
             let user = document.querySelector(".card>h3");
-            user.innerHTML = userName;
+            user.innerHTML = "欢迎您:" + userName;
         }
         getUserInfo("index.html");
     </script>

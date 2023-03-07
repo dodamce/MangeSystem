@@ -31,4 +31,31 @@ public class UserDAO {
         }
         return null;
     }
+
+    public User selectUserById(int id) {
+        Connection connection = null;
+        ResultSet resultSet = null;
+        PreparedStatement statement = null;
+        User user = new User();
+        try {
+            connection = Connect.getConnection();
+            String sql = "select * from mange.user where id=?";
+
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+
+            //查询结果为一个或者没有结果
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt("id"));
+                user.setName(resultSet.getString("name"));
+                user.setPassword(resultSet.getString("password"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            Connect.close(connection, statement, resultSet);
+        }
+        return user;
+    }
 }
