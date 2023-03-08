@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公文列表</title>
+    <link rel="stylesheet" href="./css/list.css">
+</head>
+
+<body>
+    <!-- 左侧个人信息 -->
+    <div class="left">
+        <!-- 用户信息 -->
+        <div class="return">
+            <h3><a href="/MangeSystem/index.html">返回首页</a></h3>
+        </div>
+    </div>
+
+    <div class="right"></div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script>
+        function getPaperList() {
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/list",
+                success: function (body) {
+                    //body就是个json数组,每个元素就是json数组,数组每个元素是json也就是js对象
+                    let rightDiv = document.querySelector(".right");
+                    rightDiv.innerHTML = "";//将原来测试的div代码清空
+                    for (let paper of body) {
+                        let paperDiv = document.createElement("div");
+                        paperDiv.className = "paper";
+                        //向paperDiv中添加子元素，最后将paperDiv添加到rightDiv上
+                        let titleDiv = document.createElement("div");
+                        titleDiv.className = "title";
+                        titleDiv.innerHTML = paper.title;
+                        paperDiv.appendChild(titleDiv);
+
+                        //构造发布时间,以及审核情况
+                        let str = "";
+                        if (paper.pass == "0") {
+                            str = "[未通过审核]";
+                        }
+                        else if (paper.pass == "1") {
+                            str = "[通过审核]";
+                        } else {
+                            str = "[未审核,请等待]";
+                        }
+
+                        let dataDiv = document.createElement("div");
+                        dataDiv.className = "data";
+                        dataDiv.innerHTML = paper.postTime + " " + str;
+                        paperDiv.appendChild(dataDiv);
+
+                        //构造公文摘要
+                        let contentDiv = document.createElement("div");
+                        contentDiv.className = "static";
+                        contentDiv.innerHTML = paper.content;
+                        paperDiv.appendChild(contentDiv);
+
+                        //构造查看全文连接
+                        let href = document.createElement("a");
+                        href.innerHTML = "查看公文 &gt;&gt;";
+                        href.href = "userDetile.html?paperId=" + paper.paperId;
+                        paperDiv.appendChild(href);
+
+                        rightDiv.appendChild(paperDiv);
+                    }
+                },
+                error: function () {
+                    alert("获取公文列表失败");
+                }
+            });
+        }
+        getPaperList();
+    </script>
+
+</body>
+
+</html>

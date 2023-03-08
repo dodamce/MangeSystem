@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公文请示编辑页</title>
+    <link rel="stylesheet" href="./css/official.css">
+    <link rel="stylesheet" href="./editor.md/css/editormd.min.css" />
+    <!-- <script src="js/jquery.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="./editor.md/lib/prettify.min.js"></script>
+    <script src="./editor.md/lib/marked.min.js"></script>
+    <script src="./editor.md/editormd.js"></script>
+</head>
+
+<body>
+    <script src="./js/log.js"></script>
+    <script>
+        getUserInfo("official.html"); 
+    </script>
+    <div class="edit-body">
+        <form action="/MangeSystem/list" method="post" style="height: 100%">
+            <div class="title">
+                <input type="text" placeholder="请输入公示标题" name="title" id="title" />
+                <input type="submit" value="发布公示" id="submit" />
+            </div>
+
+            <!-- 引入Mack down编辑器 -->
+            <div id="editor">
+                <!-- 使用textarea多行编辑 -->
+                <!-- 设置editor.md，让编辑器吧markdown内容同步到textarea中editormd官方文档解决方案 -->
+                <textarea name="content" style="display: none;" id="" cols="30" rows="10"></textarea>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let editor = editormd("editor", {
+            width: "100%",
+            height: "calc(100%-50)",
+            path: "./editor.md/lib/",
+            saveHTMLToTextarea: true, //将用户在编辑器的内容同步到textarea上
+        }); 
+    </script>
+</body>
+
+</html>

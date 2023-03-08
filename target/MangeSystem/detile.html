@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公文详情页</title>
+
+    <link rel="stylesheet" href="./css/detile.css">
+
+
+    <link rel="stylesheet" href="./editor.md/css/editormd.min.css" />
+    <!-- <script src="js/jquery.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="./editor.md/lib/prettify.min.js"></script>
+    <script src="./editor.md/lib/marked.min.js"></script>
+    <script src="./editor.md/editormd.js"></script>
+</head>
+
+<body>
+
+    <div class="nav"></div>
+
+    <!-- 左侧个人信息 -->
+    <div class="left">
+        <!-- 用户信息 -->
+        <div class="card">
+            <h3>文章作者:</h3>
+
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="blog-content">
+            <h3></h3>
+            <div class="data"></div>
+            <!-- 博客正文 -->
+            <div id="content" style="opacity: 70%"></div>
+        </div>
+    </div>
+
+    <script>
+
+        function getBlogDetails() {
+            // js中location.search可以直接获取到当前页面url上的参数
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/list" + location.search,
+                success: function (body) {
+                    //body是js对象，将数据填写到对应内容
+                    let h3 = document.querySelector(".blog-content>h3");
+                    h3.innerHTML = body.title;
+
+                    let dataDiv = document.querySelector(".data");
+                    dataDiv.innerHTML = body.postTime;
+
+                    //使用editor.md库来渲染markdown格式
+                    // let contentDiv = document.querySelector("#content");
+                    // contentDiv.innerHTML = body.content;
+                    editormd.markdownToHTML('content', {
+                        markdown: body.content
+                    });
+                }
+            });
+        }
+
+        getBlogDetails();
+
+        function changeUserMsg(userName) {
+            //根据获取到的信息修改用户信息
+            let user = document.querySelector(".card>h3");
+            user.innerHTML = "文章作者:" + userName;
+        }
+
+
+
+        //从服务器获取这篇博客的作者信息，显示到文章上
+        //user:从服务器中获取的登录用户信息
+        function GetAuthor(user) {
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/authorInfo" + location.search,
+                success: function (body) {
+                    //body是服务器返博客作者信息
+                    if (body.name) {
+                        //将用户名设置到页面上
+                        changeUserMsg(body.name);
+                        if (user.name == "root") {
+
+                            //显示删除按钮
+                            let navDiv = document.querySelector(".nav");//获取到导航栏
+                            let a = document.createElement('a');
+                            a.className = "delete";
+                            a.innerHTML = "删除";
+                            //delete?paperId=x
+                            a.href = "delete" + location.search;
+                            navDiv.appendChild(a);
+
+                            let pass = document.createElement('a');
+                            pass.className = "pass";
+                            pass.innerHTML = "通过审核";
+                            pass.href = "check" + location.search + "&pass=" + 1;
+                            navDiv.appendChild(pass);
+
+                            let not_pass = document.createElement('a');
+                            not_pass.className = "not_pass";
+                            not_pass.innerHTML = "没有通过审核";
+                            not_pass.href = "check" + location.search + "&pass=" + 0;
+                            navDiv.appendChild(not_pass);
+                        }
+                    } else {
+                        console.log("获取信息失败 :" + body.reason);
+                    }
+                }
+            })
+        }
+
+        //获取登录状态
+        function getUserInfo(pageName) {
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/log",
+                success: function (body) {
+                    //判断body是否合法
+                    if (body.id && body.id > 0) {
+                        //登录成功
+                        console.log("用户已经成功 用户名:" + body.name);
+
+                        //登录成功，获取用户信息
+                        GetAuthor(body);
+                    } else {
+                        //跳转到登录页面
+                        alert("请登录后访问");
+                        location.assign("/MangeSystem/log.html");
+                    }
+                },
+                error: function () {
+                    //跳转到登录页面
+                    location.assign("/MangeSystem/log.html");
+                },
+            });
+        }
+
+        // 判断用户的登录状态
+        getUserInfo("detile.html");
+
+    </script>
+</body>
+
+</html>

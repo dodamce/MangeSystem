@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/index.css">
+    <title>企业资源管理系统主页</title>
+</head>
+
+<body>
+    <style>
+        img {
+            width: 2%;
+        }
+
+        .left a {
+            display: block;
+            width: 140px;
+            height: 40px;
+            margin: 0 auto;
+            border: 2px black solid;
+            color: black;
+            line-height: 40px;
+            text-align: center;
+            text-decoration: none;
+            margin: 10px auto;
+
+            /* 过渡 */
+            transition: all 0.3s;
+        }
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- 左侧个人信息 -->
+    <div class="left">
+        <!-- 用户信息 -->
+        <div class="card">
+            <h3>欢迎您</h3>
+            <!-- <img src="./img/root.jpg" alt="头像"> -->
+            <a href="/MangeSystem/logout">退出登录</a>
+        </div>
+    </div>
+    <h1 align="center">欢迎来到企业资源管理系统</h1><br>
+    <h2 align="center"><a href="/MangeSystem/official.html">公文申请</a></h2>
+    <h2 align="center"><a href="/MangeSystem/list.html">公文列表查看</a></h2>
+    <h2 align="center"><a href="/MangeSystem/list.html">邮箱发送(未完成)</a></h2>
+    <h2 align="center"><a id="key" href="/MangeSystem/passList.html"></a></h2>
+    <script>
+        //获取登录状态
+        function getUserInfo(pageName) {
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/log",
+                success: function (body) {
+                    //判断body是否合法
+                    if (body.id && body.id > 0) {
+                        //登录成功
+                        console.log("用户已经成功 用户名:" + body.name);
+                        //将用户名设置到对应位置
+                        if (pageName == "index.html") {
+                            changeUserMsg(body.name);
+                        }
+                        if (body.id == 1) {
+
+                            //root用户,主页显示审核选项
+                            let key = document.getElementById("key");
+                            // alert("DEBUG");
+                            key.innerHTML = "公文审核";
+                            key.href = "/MangeSystem/passList.html";
+                        }
+                    } else {
+                        //跳转到登录页面
+                        alert("请登录后访问");
+                        location.assign("/MangeSystem/log.html");
+                    }
+                },
+                error: function () {
+                    //跳转到登录页面
+                    location.assign("/ManegeSystem/log.html");
+                },
+            });
+        }
+        //更改页面信息
+        function changeUserMsg(userName) {
+            //根据获取到的信息修改用户信息
+            let user = document.querySelector(".card>h3");
+            user.innerHTML = "欢迎您:" + userName;
+        }
+        getUserInfo("index.html");
+    </script>
+</body>
+
+</html>
