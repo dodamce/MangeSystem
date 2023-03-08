@@ -19,3 +19,24 @@
     width: 250px;
     /* background-color: aliceblue; */
 }
+
+.return a {
+    display: block;
+    width: 140px;
+    height: 40px;
+    margin: 0 auto;
+    border: 2px black solid;
+    color: black;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+
+    /* 过渡 */
+    transition: all 0.3s;
+}
+
+.return a:hover {
+    background: #333;
+    color: white;
+}

@@ -86,29 +86,6 @@
                     if (body.name) {
                         //将用户名设置到页面上
                         changeUserMsg(body.name);
-                        if (user.name == "root") {
-
-                            //显示删除按钮
-                            let navDiv = document.querySelector(".nav");//获取到导航栏
-                            let a = document.createElement('a');
-                            a.className = "delete";
-                            a.innerHTML = "删除";
-                            //delete?paperId=x
-                            a.href = "delete" + location.search;
-                            navDiv.appendChild(a);
-
-                            let pass = document.createElement('a');
-                            pass.className = "pass";
-                            pass.innerHTML = "通过审核";
-                            pass.href = "check" + location.search + "&pass=" + 1;
-                            navDiv.appendChild(pass);
-
-                            let not_pass = document.createElement('a');
-                            not_pass.className = "not_pass";
-                            not_pass.innerHTML = "没有通过审核";
-                            not_pass.href = "check" + location.search + "&pass=" + 0;
-                            navDiv.appendChild(not_pass);
-                        }
                     } else {
                         console.log("获取信息失败 :" + body.reason);
                     }
@@ -143,7 +120,7 @@
         }
 
         // 判断用户的登录状态
-        getUserInfo("detile.html");
+        getUserInfo("userDetile.html");
 
     </script>
 </body>

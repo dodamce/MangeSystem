@@ -154,4 +154,22 @@ public class PaperDAO {
             Connect.close(connection, statement, null);
         }
     }
+
+    //修改公文审核权限
+    public void changePermission(int paperId, int key) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = Connect.getConnection();
+            String sql = "update mange.paper set pass=? where paperId=?";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, key);
+            statement.setInt(2, paperId);
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            Connect.close(connection, statement, null);
+        }
+    }
 }
