@@ -14,6 +14,22 @@
         img {
             width: 2%;
         }
+
+        .left a {
+            display: block;
+            width: 140px;
+            height: 40px;
+            margin: 0 auto;
+            border: 2px black solid;
+            color: black;
+            line-height: 40px;
+            text-align: center;
+            text-decoration: none;
+            margin: 10px auto;
+
+            /* 过渡 */
+            transition: all 0.3s;
+        }
     </style>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <!-- 左侧个人信息 -->
@@ -21,14 +37,14 @@
         <!-- 用户信息 -->
         <div class="card">
             <h3>欢迎您</h3>
-                <!-- <img src="./img/root.jpg" alt="头像"> -->
-
+            <!-- <img src="./img/root.jpg" alt="头像"> -->
+            <a href="/MangeSystem/logout">退出登录</a>
         </div>
     </div>
     <h1 align="center">欢迎来到企业资源管理系统</h1><br>
     <h2 align="center"><a href="/MangeSystem/official.html">公文申请</a></h2>
     <h2 align="center"><a href="/MangeSystem/list.html">公文列表查看</a></h2>
-    <h2 align="center"><a href="/MangeSystem/list.html">邮箱发送</a></h2>
+    <h2 align="center"><a href="/MangeSystem/list.html">邮箱发送(未完成)</a></h2>
     <h2 align="center"><a id="key" href="/MangeSystem/passList.html"></a></h2>
     <script>
         //获取登录状态
