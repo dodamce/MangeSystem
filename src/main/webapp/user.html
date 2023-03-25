@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理界面</title>
+</head>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<body>
+    <style>
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            padding: 2px 6px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>用户id</th>
+                <th>用户名称</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+</body>
+<script>
+    // 获取json数据
+    $.ajax({
+        url: '/MangeSystem/data',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            // 解析json数据，并生成表格
+            for (var i = 0; i < data.length; i++) {
+                var row = "";
+                if (data[i].id == 1) {
+                    //root用户不显示删除
+                    row = '<tr><td>' + data[i].id + '</td><td>' + data[i].name + '</td><td><button class="btn btn-danger delete-btn" data-id="' + data[i].id + '">root用户无法删除</button></td></tr>';
+                }
+                else {
+                    row = '<tr><td>' + data[i].id + '</td><td>' + data[i].name + '</td><td><button class="btn btn-danger delete-btn" data-id="' + data[i].id + '">删除</button></td></tr>';
+                }
+                $('#table-body').append(row);
+            }
+        }
+    });
+
+    // 删除按钮点击事件
+    $(document).on('click', '.delete-btn', function () {
+        var id = $(this).data('id');
+        var row = $(this).closest('tr');
+        if (id == 1) {
+            //root用户无法删除
+            return;
+        }
+        // 发送删除请求
+        $.ajax({
+            url: '/MangeSystem/data?id=' + id,
+            type: 'DELETE',
+            success: function (result) {
+                if (result.success) {
+                    // 删除该行表格
+                    row.remove();
+                    location.reload(true);
+                } else {
+                    alert('Delete failed');
+                }
+            }
+        });
+    });
+</script>
+
+</html>

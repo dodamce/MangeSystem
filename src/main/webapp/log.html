@@ -3,10 +3,76 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/log.css" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>企业资源管理系统登录界面</title>
     <link rel="stylesheet" href="./css/log.css" />
+    <style>
+        body {
+            background-color: #f2f2f2;
+        }
+
+        .log {
+            margin: 50px auto;
+            width: 400px;
+            height: 400px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .log h3 {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 30px;
+        }
+
+        .log .row {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .log .row span {
+            display: inline-block;
+            width: 80px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .log .row input {
+            width: 200px;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .log #submit {
+            width: 100px;
+            height: 40px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        .log #submit:hover {
+            background-color: #3e8e41;
+        }
+
+        .log a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-size: 16px;
+            border-bottom: 1px solid #4CAF50;
+            padding-bottom: 2px;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,7 +92,13 @@
 
                 <div class="row">
                     <input type="submit" id="submit" value="登录">
+
                 </div>
+
+                <div class="row">
+                    <a href="./register.html">注册账号</a>
+                </div>
+
             </div>
         </form>
     </div>

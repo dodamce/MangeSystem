@@ -44,7 +44,8 @@
     <h1 align="center">欢迎来到企业资源管理系统</h1><br>
     <h2 align="center"><a href="/MangeSystem/official.html">公文申请</a></h2>
     <h2 align="center"><a href="/MangeSystem/list.html">公文列表查看</a></h2>
-    <h2 align="center"><a href="/MangeSystem/list.html">邮箱发送(未完成)</a></h2>
+    <!--    <h2 align="center"><a href="/MangeSystem/list.html">邮箱发送(未完成)</a></h2>-->
+    <h2 align="center"><a id="key_user" href="/MangeSystem/user.html"></a></h2>
     <h2 align="center"><a id="key" href="/MangeSystem/passList.html"></a></h2>
     <script>
         //获取登录状态
@@ -68,6 +69,10 @@
                             // alert("DEBUG");
                             key.innerHTML = "公文审核";
                             key.href = "/MangeSystem/passList.html";
+
+                            let key_user = document.getElementById("key_user");
+                            key_user.innerHTML = "用户管理";
+                            key_user.href = "/MangeSystem/user.html";
                         }
                     } else {
                         //跳转到登录页面
