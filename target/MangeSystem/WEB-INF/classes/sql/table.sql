@@ -26,6 +26,15 @@ create table paper
     pass     int         -- 文章是否通过 1.通过 0.未通过 2未审核
 ) char set utf8;
 
+# 货物表
+create table goods
+(
+    id       int primary key auto_increment,
+    name     varchar(1024),
+    price    varchar(20),
+    quantity varchar(20)
+) char set utf8;
+
 insert into user
 values (null, 'root', '000000');
 insert into user
@@ -37,3 +46,6 @@ insert into paper
 values (null, 'root用户公文2', '中北大学信息对抗公文公示2', 1, now(), 0);
 insert into paper
 values (null, 'root用户公文3', '中北大学信息对抗公文公示3', 1, now(), 2);
+
+insert into goods
+values (null, '苹果', '1.33元每斤', '10斤');

@@ -104,9 +104,9 @@ public class UserDAO {
     public void insert(User user) {
         Connection connection = null;
         PreparedStatement statement = null;
-        System.out.println(user.getId());
-        System.out.println(user.getName());
-        System.out.println(user.getPassword());
+//        System.out.println(user.getId());
+//        System.out.println(user.getName());
+//        System.out.println(user.getPassword());
         try {
             connection = Connect.getConnection();
             String sql = "insert into mange.user values(null,?,?)";

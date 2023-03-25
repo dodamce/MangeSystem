@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仓库管理系统</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form input[type="text"],
+        .form input[type="number"] {
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .form input[type="submit"] {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 5px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        /* 将按钮样式应用到所有按钮 */
+        button {
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* 设置编辑按钮样式 */
+        button.edit {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        /* 设置删除按钮样式 */
+        button.delete {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+        }
+    </style>
+</head>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<body>
+    <div class="container">
+        <h1>仓库管理系统</h1>
+        <div class="form">
+            <h2>添加货物</h2>
+            <form action="" method="post" onsubmit="return false;">
+                <label for="name">货物名称：</label>
+                <input type="text" id="name" name="name" required>
+                <label for="price">货物单价：</label>
+                <input type="number" id="price" name="price" min="0" required>
+                <label for="quantity">货物数量：</label>
+                <input type="number" id="quantity" name="quantity" min="0" required>
+                <input type="submit" value="添加货物" onclick="addGoods()">
+            </form>
+        </div>
+        <h2>货物列表</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>货物编号</th>
+                    <th>货物名称</th>
+                    <th>货物单价</th>
+                    <th>货物数量</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="goods-list">
+
+            </tbody>
+        </table>
+    </div>
+    <script>
+        // 添加货物并刷新表格
+        function addGoods() {
+            // 获取表单数据
+            const name = document.getElementById('name').value;
+            const price = document.getElementById('price').value;
+            const quantity = document.getElementById('quantity').value;
+
+            // 发起 POST 请求添加货物
+            fetch('/MangeSystem/goods', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    price: price,
+                    quantity: quantity
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // 添加货物到表格中
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${data.id}</td>
+                        <td>${data.name}</td>
+                        <td>${data.price}</td>
+                        <td>${data.quantity}</td>
+                        <td>
+                        <button onclick="editGoods(${data.id})">编辑</button>
+                        <button onclick="deleteGoods(${data.id})">删除</button>
+                        </td>
+                    `;
+                    goodsList.appendChild(tr);
+
+                    // 清空表单数据
+                    document.getElementById('name').value = '';
+                    document.getElementById('price').value = '';
+                    document.getElementById('quantity').value = '';
+                })
+                .catch(error => console.error(error));
+        }
+        // 获取表格元素
+        const goodsList = document.getElementById('goods-list');
+
+        // 获取货物数据并添加到表格中
+        function loadGoods() {
+            fetch('/MangeSystem/goods')
+                .then(response => response.json())
+                .then(data => {
+                    // 清空表格中已有的数据
+                    goodsList.innerHTML = '';
+
+                    // 遍历数据并将其添加到表格上
+                    data.forEach(goods => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                        <td>${goods.id}</td>
+                        <td>${goods.name}</td>
+                        <td>${goods.price}</td>
+                        <td>${goods.quantity}</td>
+                        <td>
+                            <button onclick="editGoods(${goods.id})">编辑</button>
+                            <button onclick="deleteGoods(${goods.id})">删除</button>
+                        </td>
+                        `
+                        goodsList.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error(error));
+        }
+
+        function editGoods(id) {
+            const newName = prompt('请输入新的货物名称：');
+            const newPrice = prompt('请输入新的货物单价：');
+            const newQuantity = prompt('请输入新的货物数量：');
+
+            // 发起 PUT 请求更新货物
+            fetch(`/api/goods/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: newName,
+                    price: newPrice,
+                    quantity: newQuantity
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // 更新表格中的货物数据
+                    const tr = document.querySelector(`#goods-list tr[data-id="${id}"]`);
+                    tr.innerHTML = `
+                    <td>${data.id}</td>
+                    <td>${data.name}</td>
+                    <td>${data.price}</td>
+                    <td>${data.quantity}</td>
+                    <td>
+                    <button onclick="editGoods(${data.id})">编辑</button>
+                    <button onclick="deleteGoods(${data.id})">删除</button>
+                    </td>
+                `;
+                })
+                .catch(error => console.error(error));
+        }
+
+        function deleteGoods(id) {
+            // 发起 DELETE 请求删除货物
+            fetch(`/api/goods/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    // 从表格中移除货物数据
+                    const tr = document.querySelector(`#goods-list tr[data-id="${id}"]`);
+                    tr.remove();
+                })
+                .catch(error => console.error(error));
+        }
+
+        // 页面加载完成后调用加载货物数据的函数
+        window.onload = loadGoods;
+    </script>
+</body>

@@ -47,6 +47,7 @@
     <!--    <h2 align="center"><a href="/MangeSystem/list.html">邮箱发送(未完成)</a></h2>-->
     <h2 align="center"><a id="key_user" href="/MangeSystem/user.html"></a></h2>
     <h2 align="center"><a id="key" href="/MangeSystem/passList.html"></a></h2>
+    <h2 align="center"><a href="./obj.html">仓库管理(进销存)</a></h2>
     <script>
         //获取登录状态
         function getUserInfo(pageName) {
@@ -86,12 +87,14 @@
                 },
             });
         }
+
         //更改页面信息
         function changeUserMsg(userName) {
             //根据获取到的信息修改用户信息
             let user = document.querySelector(".card>h3");
             user.innerHTML = "欢迎您:" + userName;
         }
+
         getUserInfo("index.html");
     </script>
 </body>
