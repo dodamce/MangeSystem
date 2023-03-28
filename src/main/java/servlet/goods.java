@@ -47,4 +47,40 @@ public class goods extends HttpServlet {
         String Json = objectMapper.writeValueAsString(list);
         resp.getWriter().write(Json);
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //删除货存
+        String id = req.getParameter("id");
+        resp.setContentType("application/json; charset=utf8");
+        GoodsDAO goodsDAO = new GoodsDAO();
+        goodsDAO.delete(Integer.parseInt(id));
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //更新数据
+        String msg = req.getParameter("id");
+//        System.out.println(msg);
+        resp.setContentType("application/json; charset=utf8");
+        // 读取 HTTP POST 请求的 body 内容
+        BufferedReader reader = new BufferedReader(new InputStreamReader(req.getInputStream()));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+        String payload = stringBuilder.toString();
+
+        // 将 JSON 字符串转换成 Java 对象
+        Goods goods = objectMapper.readValue(payload, Goods.class);
+        goods.setId(Integer.parseInt(msg));
+
+        if (goods.getName().equals("")) {
+            return;
+        }
+
+        GoodsDAO goodsDAO = new GoodsDAO();
+        goodsDAO.alter(goods);
+    }
 }

@@ -27,6 +27,7 @@
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 3px;
+            width: 100px
         }
 
         .form input[type="submit"] {
@@ -90,9 +91,9 @@
             <form action="" method="post" onsubmit="return false;">
                 <label for="name">货物名称：</label>
                 <input type="text" id="name" name="name" required>
-                <label for="price">货物单价：</label>
+                <label for="price">货物单价(每斤)：</label>
                 <input type="number" id="price" name="price" min="0" required>
-                <label for="quantity">货物数量：</label>
+                <label for="quantity">货物数量(斤)：</label>
                 <input type="number" id="quantity" name="quantity" min="0" required>
                 <input type="submit" value="添加货物" onclick="addGoods()">
             </form>
@@ -103,8 +104,8 @@
                 <tr>
                     <th>货物编号</th>
                     <th>货物名称</th>
-                    <th>货物单价</th>
-                    <th>货物数量</th>
+                    <th>货物单价(每斤)</th>
+                    <th>货物数量(斤)</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -140,8 +141,8 @@
                     tr.innerHTML = `
                         <td>${data.id}</td>
                         <td>${data.name}</td>
-                        <td>${data.price}</td>
-                        <td>${data.quantity}</td>
+                        <td>${data.price}/斤</td>
+                        <td>${data.quantity}斤</td>
                         <td>
                         <button onclick="editGoods(${data.id})">编辑</button>
                         <button onclick="deleteGoods(${data.id})">删除</button>
@@ -173,8 +174,8 @@
                         tr.innerHTML = `
                         <td>${goods.id}</td>
                         <td>${goods.name}</td>
-                        <td>${goods.price}</td>
-                        <td>${goods.quantity}</td>
+                        <td>${goods.price}/斤</td>
+                        <td>${goods.quantity}斤</td>
                         <td>
                             <button onclick="editGoods(${goods.id})">编辑</button>
                             <button onclick="deleteGoods(${goods.id})">删除</button>
@@ -192,7 +193,7 @@
             const newQuantity = prompt('请输入新的货物数量：');
 
             // 发起 PUT 请求更新货物
-            fetch(`/api/goods/${id}`, {
+            fetch(`/MangeSystem/goods?id=${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -201,7 +202,8 @@
                     name: newName,
                     price: newPrice,
                     quantity: newQuantity
-                })
+                }),
+                cache: 'no-cache'
             })
                 .then(response => response.json())
                 .then(data => {
@@ -210,8 +212,8 @@
                     tr.innerHTML = `
                     <td>${data.id}</td>
                     <td>${data.name}</td>
-                    <td>${data.price}</td>
-                    <td>${data.quantity}</td>
+                    <td>${data.price}/斤</td>
+                    <td>${data.quantity}斤</td>
                     <td>
                     <button onclick="editGoods(${data.id})">编辑</button>
                     <button onclick="deleteGoods(${data.id})">删除</button>
@@ -223,7 +225,7 @@
 
         function deleteGoods(id) {
             // 发起 DELETE 请求删除货物
-            fetch(`/api/goods/${id}`, {
+            fetch(`/MangeSystem/goods?id=${id}`, {
                 method: 'DELETE'
             })
                 .then(response => {

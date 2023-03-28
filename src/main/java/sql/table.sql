@@ -27,6 +27,8 @@ create table paper
 ) char set utf8;
 
 # 货物表
+drop table if exists goods;
+
 create table goods
 (
     id       int primary key auto_increment,
@@ -46,6 +48,3 @@ insert into paper
 values (null, 'root用户公文2', '中北大学信息对抗公文公示2', 1, now(), 0);
 insert into paper
 values (null, 'root用户公文3', '中北大学信息对抗公文公示3', 1, now(), 2);
-
-insert into goods
-values (null, '苹果', '1.33元每斤', '10斤');
