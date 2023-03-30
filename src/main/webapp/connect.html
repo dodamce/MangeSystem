@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebSocket Chat</title>
+</head>
+
+<body>
+    <h1>WebSocket Chat</h1>
+    <div id="messages"></div>
+
+    <form id="messageForm">
+        <label for="recipientInput">Recipient:</label>
+        <input type="text" id="recipientInput">
+        <label for="messageInput">Message:</label>
+        <input type="text" id="messageInput">
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        var socket = new WebSocket("ws://localhost:8080/MangeSystem/ChatServlet");
+
+        socket.onopen = function (event) {
+            console.log("WebSocket connected!");
+        };
+
+        socket.onmessage = function (event) {
+            var messageObj = JSON.parse(event.data);
+            var messagesDiv = document.getElementById("messages");
+            messagesDiv.innerHTML += "<p>" + messageObj['recipient'] + ":" + messageObj['message'] + "</p>";
+        };
+
+        document.getElementById("messageForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            var recipientInput = document.getElementById("recipientInput");
+            var messageInput = document.getElementById("messageInput");
+            var data = {
+                "recipient": recipientInput.value,
+                "message": messageInput.value
+            };
+            socket.send(JSON.stringify(data));
+            recipientInput.value = "";
+            messageInput.value = "";
+        });
+    </script>
+</body>
+
+</html>
