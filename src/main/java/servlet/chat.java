@@ -13,6 +13,10 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import com.google.gson.Gson;
+import sql.Mesage;
+import sql.MsgDAO;
+
 @ServerEndpoint("/ChatServlet")
 public class chat {
     private static final List<Session> sessions = Collections.synchronizedList(new ArrayList<Session>());
@@ -28,6 +32,9 @@ public class chat {
         System.out.println("Message received: " + message);
         try {
             Gson gson = new Gson();
+            Mesage mesage = gson.fromJson(message, Mesage.class);
+            MsgDAO msgDAO = new MsgDAO();
+            msgDAO.insert(mesage);
             ChatMessage chatMessage = gson.fromJson(message, ChatMessage.class);
             broadcast(chatMessage);
         } catch (JsonSyntaxException e) {
@@ -54,15 +61,15 @@ public class chat {
     }
 
     private static class ChatMessage {
-        private String recipient;
+        private String sender;
         private String message;
 
-        public String getRecipient() {
-            return recipient;
+        public String getSender() {
+            return sender;
         }
 
-        public void setRecipient(String recipient) {
-            this.recipient = recipient;
+        public void setSender(String sender) {
+            this.sender = sender;
         }
 
         public String getMessage() {

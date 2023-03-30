@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>聊天界面</title>
+    <meta charset="UTF-8">
+</head>
+<style>
+    /* 全局样式 */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+    }
+
+    /* 标题样式 */
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    /* 消息列表样式 */
+    #messages {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin: 20px auto;
+        padding: 20px;
+        width: 80%;
+        max-width: 800px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #messages p {
+        margin: 0;
+        padding: 5px 0;
+        font-size: 14px;
+        color: #666;
+    }
+
+    #messages p.sender {
+        font-weight: bold;
+        color: #333;
+    }
+
+    #messages p.message {
+        margin-left: 30px;
+    }
+
+    /* 表单样式 */
+    #messageForm {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin: 20px auto;
+        padding: 20px;
+        width: 40%;
+        max-width: 800px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    #messageForm label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    #messageForm input[type="text"] {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #333;
+    }
+
+    #messageForm button[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    #messageForm button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<body>
+    <h1>企业消息通知群</h1>
+    <div id="messages"></div>
+
+    <form id="messageForm">
+        <label for="recipientInput">发送者:</label>
+        <input type="text" id="recipientInput" readonly>
+        <label for="messageInput">消息内容:</label>
+        <input type="text" id="messageInput">
+        <button type="submit">发送</button>
+    </form>
+    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        $(function () {
+            function loadMessages() {
+                $.get('/MangeSystem/message', function (data) {
+                    var messages = data;
+                    for (var i = 0; i < messages.length; i++) {
+                        var message = messages[i];
+                        var date = new Date();
+                        date.setTime(message.time);
+                        $('#messages').append('<p><strong>' + message.sender + '(' + date.toLocaleString() + '):</strong> ' + message.message + '</p>');
+                    }
+                });
+            }
+
+            loadMessages();
+        });
+
+        $(document).ready(function () {
+            // 发送AJAX请求获取当前用户的用户名
+            $.ajax({
+                url: '/MangeSystem/log',
+                method: 'GET',
+                success: function (response) {
+                    $('#recipientInput').val(response.name);
+                },
+                error: function () {
+                    console.log('Failed to get username');
+                }
+            })
+        });
+
+        var socket = new WebSocket("ws://localhost:8080/MangeSystem/ChatServlet");
+
+        socket.onopen = function (event) {
+            console.log("WebSocket connected!");
+        };
+
+        socket.onmessage = function (event) {
+            var messageObj = JSON.parse(event.data);
+            var messagesDiv = document.getElementById("messages");
+            var date = new Date();
+            date.setTime(message.time);
+            messagesDiv.innerHTML += "<p>" + messageObj['sender'] + +"(" + date.toLocaleString() + ")" + ":" + messageObj['message'] + "</p>";
+        };
+
+        document.getElementById("messageForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            var recipientInput = document.getElementById("recipientInput");
+            var messageInput = document.getElementById("messageInput");
+            var data = {
+                "sender": recipientInput.value,
+                "message": messageInput.value
+            };
+            socket.send(JSON.stringify(data));
+            recipientInput.value = "";
+            messageInput.value = "";
+        });
+    </script>
+</body>
+
+</html>

@@ -47,6 +47,16 @@ create table money
     remain  int  -- 剩余
 ) char set utf8;
 
+# 聊天记录数据库
+drop table if exists msg;
+
+create table msg
+(
+    time    timestamp, -- 消息时间
+    sender  varchar(20),
+    message varchar(20)
+) char set utf8;
+
 insert into user
 values (null, 'root', '000000');
 insert into user
@@ -61,3 +71,6 @@ values (null, 'root用户公文3', '中北大学信息对抗公文公示3', 1, n
 
 insert into money
 values ('2023-3-15 00:00:00', 6000, 1000, 5000);
+
+insert into msg
+values (now(), 'root', '这时聊天记录数据库');
