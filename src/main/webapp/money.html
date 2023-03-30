@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>资金管理</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 5px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+
+        form {
+            display: flex;
+            flex-direction: column;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            width: 400px;
+        }
+
+        .form label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .form input[type="submit"]:hover {
+            background-color: #0062cc;
+        }
+
+        h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>资金管理</h1>
+
+        <canvas id="myChart"></canvas>
+
+        <h2>添加记录</h2>
+        <div class="form-container">
+            <form id="record-form" action="/MangeSystem/chart" method="post">
+                <label for="date">日期：</label>
+                <input type="text" id="date" name="date" readonly>
+
+                <label for="income">收入(元)：</label>
+                <input type="number" id="income" name="income" min="0" required oninput="calculateBalance()">
+
+                <label for="expense">支出(元)：</label>
+                <input type="number" id="expense" name="expense" min="0" required oninput="calculateBalance()">
+
+                <label for="balance">余额(元)：</label>
+                <input type="number" id="balance" name="balance" readonly>
+
+                <input type="submit" id="submit-btn" value="添加记录">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function calculateBalance() {
+            const income = parseFloat(document.getElementById('income').value);
+            const expense = parseFloat(document.getElementById('expense').value);
+            const balance = isNaN(income) || isNaN(expense) ? '' : income - expense;
+            document.getElementById('balance').value = balance;
+        }
+        
+        // 获取当前日期时间
+        const now = new Date();
+
+        // 格式化日期
+        const year = now.getFullYear();
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const day = now.getDate().toString().padStart(2, '0');
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+        // 将日期填充到输入框中
+        const dateInput = document.getElementById('date');
+        dateInput.value = formattedDate;
+
+        // 获取数据并绘制图表
+        fetch('/MangeSystem/chart')
+            .then(response => response.json())
+            .then(data => {
+                var ctx = document.getElementById("myChart").getContext("2d");
+                var myChart = new Chart(ctx, {
+                    type: "line",
+                    data: data,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            });
+
+        // // 提交表单时发送数据到服务器
+        // document.getElementById('record-form').addEventListener('submit', (event) => {
+        //     event.preventDefault(); // 阻止表单默认提交行为
+
+        //     // 获取表单数据
+        //     const formData = new FormData(event.target);
+
+        //     // 发送数据到服务器
+        //     fetch('/MangeSystem/chart', {
+        //         method: 'POST',
+        //         body: formData
+        //     })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data);
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //         });
+        // });
+    </script>
+</body>
+
+</html>
