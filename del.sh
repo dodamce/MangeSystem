@@ -20,3 +20,4 @@ echo "完毕！"
 # 使用crontab命令设置定时任务，每天0点执行
 # crontab -e
 # 0 0 * * * /bin/bash /root/del.sh
+# crontab -l显示命令清单
