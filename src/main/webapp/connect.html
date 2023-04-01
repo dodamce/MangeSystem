@@ -107,7 +107,7 @@
         <input type="text" id="messageInput">
         <button type="submit">发送</button>
     </form>
-    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
     <script>
         $(function () {
             function loadMessages() {
@@ -139,7 +139,7 @@
             })
         });
 
-        var socket = new WebSocket("ws://localhost:8080/MangeSystem/ChatServlet");
+        var socket = new WebSocket("ws://116.204.74.176:8080/MangeSystem/ChatServlet");
 
         socket.onopen = function (event) {
             console.log("WebSocket connected!");
