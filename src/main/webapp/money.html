@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>资金管理</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./js/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -124,7 +124,7 @@
             const balance = isNaN(income) || isNaN(expense) ? '' : income - expense;
             document.getElementById('balance').value = balance;
         }
-        
+
         // 获取当前日期时间
         const now = new Date();
 
