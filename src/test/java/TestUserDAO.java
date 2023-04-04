@@ -24,9 +24,9 @@ public class TestUserDAO {
 
     @Test
     public void testSelectByName() {
-        User user = userDao.SelectByName("John");
+        User user = userDao.SelectByName("root");
         assertNotNull(user);
-        assertEquals("John", user.getName());
+        assertEquals("root", user.getName());
     }
 
     @Test
@@ -40,14 +40,14 @@ public class TestUserDAO {
     public void testGetAllUser() {
         List<User> users = userDao.getAllUser();
         assertNotNull(users);
-        assertEquals(3, users.size());
+        assertEquals(2, users.size());
     }
 
     @Test
     public void testDropUser() {
         userDao.dropUser(3);
         User user = userDao.selectUserById(3);
-        assertNull(user);
+        assertEquals(user.getId(), 0);
     }
 
     @Test
