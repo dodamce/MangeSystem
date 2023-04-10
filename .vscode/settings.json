@@ -1,3 +1,4 @@
 {
-    "livePreview.defaultPreviewPath": "/src/main/webapp/obj.html"
+    "livePreview.defaultPreviewPath": "/src/main/webapp/obj.html",
+    "java.configuration.updateBuildConfiguration": "disabled"
 }
