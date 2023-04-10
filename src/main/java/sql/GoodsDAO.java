@@ -66,7 +66,7 @@ public class GoodsDAO {
         return goods;
     }
 
-    public void insert(Goods goods) {
+    public Goods insert(Goods goods) {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -86,8 +86,11 @@ public class GoodsDAO {
             String formattedDateTime = currentDateTime.format(formatter);//获取当前时间
             money.setTime(formattedDateTime);
             money.setIn_mun(0);
-            int cost = Integer.parseInt(goods.getPrice()) * Integer.parseInt(goods.getQuantity());
-            System.out.println("插入货物" + cost);
+            int cost = 0;
+            if (goods.getQuantity() != null && goods.getPrice() != null) {
+                cost = Integer.parseInt(goods.getPrice()) * Integer.parseInt(goods.getQuantity());
+            }
+//            System.out.println("插入货物" + cost);
             money.setOut_num(cost);
             money.setRemain(-cost);
             moneyDAO.modify(money);
@@ -97,6 +100,7 @@ public class GoodsDAO {
         } finally {
             Connect.close(connection, statement, null);
         }
+        return goods;
     }
 
     public void alter(Goods goods) {
@@ -134,7 +138,10 @@ public class GoodsDAO {
             String formattedDateTime = currentDateTime.format(formatter);//获取当前时间
             money.setTime(formattedDateTime);//获取当前时间
 
-            int cost = Integer.parseInt(goods.getPrice()) * Integer.parseInt(goods.getQuantity());
+            int cost = 0;
+            if (goods.getQuantity() != null && goods.getPrice() != null) {
+                cost = Integer.parseInt(goods.getPrice()) * Integer.parseInt(goods.getQuantity());
+            }
             money.setIn_mun(cost);
             money.setOut_num(0);
             money.setRemain(cost);
