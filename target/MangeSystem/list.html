@@ -9,6 +9,98 @@
     <link rel="stylesheet" href="./css/list.css">
 </head>
 
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+    }
+
+    /* 左侧个人信息区域 */
+    .left {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 100%;
+        background-color: #fff;
+        box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1);
+    }
+
+    /* 返回首页链接 */
+    .return {
+        margin: 30px;
+        text-align: center;
+    }
+
+    /* 链接样式 */
+    .return a {
+        display: block;
+        margin-top: 20px;
+        font-size: 16px;
+        color: #666;
+        text-decoration: none;
+    }
+
+    /* 右侧公文列表区域 */
+    .right {
+        margin-left: 200px;
+        padding: 30px;
+    }
+
+    /* 公文卡片 */
+    .paper {
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+    }
+
+    /* 公文标题 */
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* 公文发布时间和审核情况 */
+    .data {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #666;
+    }
+
+    /* 公文摘要 */
+    .static {
+        margin-top: 20px;
+        font-size: 16px;
+        color: #666;
+        line-height: 1.5;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+    }
+
+    /* “查看公文”链接 */
+    .paper a {
+        display: block;
+        margin-top: 20px;
+        font-size: 16px;
+        color: #333;
+        text-decoration: none;
+    }
+
+    /* 鼠标悬停链接的样式 */
+    .paper a:hover {
+        text-decoration: underline;
+    }
+</style>
+
 <body>
     <!-- 左侧个人信息 -->
     <div class="left">
