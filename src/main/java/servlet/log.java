@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import uncode.key;
+
 
 @WebServlet("/log")
 public class log extends HttpServlet {
@@ -26,7 +28,11 @@ public class log extends HttpServlet {
         // 获取请求参数，和数据库的内容进行比较，比较成功创建会话
         String name = req.getParameter("name");
         String password = req.getParameter("password");
-//        System.out.println("DEBUG:" + name + " " + password);
+//        System.out.println("DEBUG BEFORE:" + name + " " + password);
+        key decode = new key();
+        password = decode.decode(password);
+//        System.out.println("DEBUG AFTER:" + name + " " + password);
+
         if (null == name || "".equals(name) || null == password || "".equals(password)) {
             // 数据不全
             resp.setContentType("text/html; charset=utf8");

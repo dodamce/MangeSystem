@@ -63,13 +63,42 @@
 
 <body>
     <h1>企业用户注册</h1>
-    <form action="/MangeSystem/register" method="POST">
+    <form id="register-form" action="/MangeSystem/register" method="POST">
         <label for="username">用户名:</label>
         <input type="text" id="username" name="name" required><br>
         <label for="password">密码:</label>
         <input type="password" id="password" name="password" required><br>
-        <button type="submit">注册</button>
+        <button type="submit" id="submits">注册</button>
     </form>
 </body>
+
+<script>
+    // 获取表单元素和注册按钮
+    const form = document.getElementById("register-form");
+    const registerBtn = document.getElementById("submits");
+
+    // 定义密码格式的正则表达式
+    const passwordPattern = /^[a-zA-Z0-9]+$/;
+
+    // 监听表单提交事件
+    form.addEventListener("submit", function (event) {
+        // 阻止表单默认的提交行为
+        event.preventDefault();
+
+        // 检查密码格式是否正确
+        const passwordInput = document.getElementById("password");
+        const password = passwordInput.value;
+        const isPasswordValid = passwordPattern.test(password);
+
+        // 如果密码格式不正确，则弹出提示框
+        if (!isPasswordValid) {
+            alert("密码格式不正确！请使用数字和大小写字母组合。");
+            return;
+        }
+
+        // 如果密码格式正确，则提交表单
+        form.submit();
+    });
+</script>
 
 </html>
