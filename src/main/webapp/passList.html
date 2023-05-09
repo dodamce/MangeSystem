@@ -112,95 +112,118 @@
 </style>
 
 <body>
-<h1 align="center">公文审批列表</h1>
+    <h1 align="center">公文审批列表</h1>
 
-<div class="left">
-    <div class="return">
-        <h3><a href="/MangeSystem/index.html">返回首页</a></h3>
+    <div class="left">
+        <div class="return">
+            <h3><a href="/MangeSystem/index.html">返回首页</a></h3>
+        </div>
+        <div class="msg"></div>
     </div>
-    <div class="msg"></div>
-</div>
 
-<div class="right"></div>
+    <div class="right"></div>
 
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
 
-<script>
-    function getNoPassList() {
-        let wait = 0;
-        let fail = 0;
-        $.ajax({
-            type: "GET",
-            url: "/MangeSystem/fail",
-            success: function (body) {
-                //body就是个json数组,每个元素就是json数组,数组每个元素是json也就是js对象
-                let rightDiv = document.querySelector(".right");
-                rightDiv.innerHTML = "";//将原来测试的div代码清空
-                for (let paper of body) {
-                    let paperDiv = document.createElement("div");
-                    paperDiv.className = "paper";
-                    //向paperDiv中添加子元素，最后将paperDiv添加到rightDiv上
-                    let titleDiv = document.createElement("div");
-                    titleDiv.className = "title";
-                    titleDiv.innerHTML = paper.title;
-                    paperDiv.appendChild(titleDiv);
-
-                    //构造发布时间,以及审核情况
-                    let str = "";
-                    if (paper.pass == "0") {
-                        str = "[未通过审核]";
-                        fail += 1;
-                    } else if (paper.pass == "1") {
-                        str = "[通过审核]";
+    <script>
+        //获取登录状态
+        function getUserInfo() {
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/log",
+                success: function (body) {
+                    //判断body是否合法
+                    if (body.id && body.id > 0) {
+                        //登录成功
+                        console.log("用户已经成功 用户名:" + body.name);
                     } else {
-                        str = "[未审核,请等待]";
-                        wait += 1;
+                        //跳转到登录页面
+                        alert("请登录后访问");
+                        location.assign("/MangeSystem/log.html");
                     }
+                },
+                error: function () {
+                    //跳转到登录页面
+                    location.assign("/ManegeSystem/log.html");
+                },
+            });
+        }
+        getUserInfo();
+        function getNoPassList() {
+            let wait = 0;
+            let fail = 0;
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/fail",
+                success: function (body) {
+                    //body就是个json数组,每个元素就是json数组,数组每个元素是json也就是js对象
+                    let rightDiv = document.querySelector(".right");
+                    rightDiv.innerHTML = "";//将原来测试的div代码清空
+                    for (let paper of body) {
+                        let paperDiv = document.createElement("div");
+                        paperDiv.className = "paper";
+                        //向paperDiv中添加子元素，最后将paperDiv添加到rightDiv上
+                        let titleDiv = document.createElement("div");
+                        titleDiv.className = "title";
+                        titleDiv.innerHTML = paper.title;
+                        paperDiv.appendChild(titleDiv);
 
-                    let dataDiv = document.createElement("div");
-                    dataDiv.className = "data";
-                    dataDiv.innerHTML = paper.postTime + " " + str;
-                    paperDiv.appendChild(dataDiv);
+                        //构造发布时间,以及审核情况
+                        let str = "";
+                        if (paper.pass == "0") {
+                            str = "[未通过审核]";
+                            fail += 1;
+                        } else if (paper.pass == "1") {
+                            str = "[通过审核]";
+                        } else {
+                            str = "[未审核,请等待]";
+                            wait += 1;
+                        }
 
-                    //构造公文摘要
-                    let contentDiv = document.createElement("div");
-                    contentDiv.className = "static";
-                    contentDiv.innerHTML = paper.content;
-                    paperDiv.appendChild(contentDiv);
+                        let dataDiv = document.createElement("div");
+                        dataDiv.className = "data";
+                        dataDiv.innerHTML = paper.postTime + " " + str;
+                        paperDiv.appendChild(dataDiv);
 
-                    //构造查看全文连接
-                    let href = document.createElement("a");
-                    href.innerHTML = "查看公文 &gt;&gt;";
-                    href.href = "detile.html?paperId=" + paper.paperId;
-                    paperDiv.appendChild(href);
+                        //构造公文摘要
+                        let contentDiv = document.createElement("div");
+                        contentDiv.className = "static";
+                        contentDiv.innerHTML = paper.content;
+                        paperDiv.appendChild(contentDiv);
 
-                    rightDiv.appendChild(paperDiv);
+                        //构造查看全文连接
+                        let href = document.createElement("a");
+                        href.innerHTML = "查看公文 &gt;&gt;";
+                        href.href = "detile.html?paperId=" + paper.paperId;
+                        paperDiv.appendChild(href);
+
+                        rightDiv.appendChild(paperDiv);
+                    }
+                    let msg = document.querySelector(".msg");
+
+                    let msgDiv = document.createElement("div");
+                    msgDiv.className = "msgDiv";
+
+                    let waitDiv = document.createElement("h2");
+                    waitDiv.className = "wait";
+                    waitDiv.innerHTML = "等待审核数目:" + wait;
+                    msgDiv.appendChild(waitDiv);
+
+                    let failDiv = document.createElement("h2");
+                    failDiv.className = "fail";
+                    failDiv.innerHTML = "审核未通过数目:" + fail;
+                    msgDiv.appendChild(failDiv);
+
+                    msg.appendChild(msgDiv);
+                },
+                error: function () {
+                    alert("获取公文列表失败");
                 }
-                let msg = document.querySelector(".msg");
+            });
+        }
 
-                let msgDiv = document.createElement("div");
-                msgDiv.className = "msgDiv";
-
-                let waitDiv = document.createElement("h2");
-                waitDiv.className = "wait";
-                waitDiv.innerHTML = "等待审核数目:" + wait;
-                msgDiv.appendChild(waitDiv);
-
-                let failDiv = document.createElement("h2");
-                failDiv.className = "fail";
-                failDiv.innerHTML = "审核未通过数目:" + fail;
-                msgDiv.appendChild(failDiv);
-
-                msg.appendChild(msgDiv);
-            },
-            error: function () {
-                alert("获取公文列表失败");
-            }
-        });
-    }
-
-    getNoPassList();
-</script>
+        getNoPassList();
+    </script>
 
 </body>
 

@@ -116,8 +116,32 @@
             </form>
         </div>
     </div>
-
+    <script src="./js/jquery.min.js"></script>
     <script>
+        //获取登录状态
+        function getUserInfo() {
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/log",
+                success: function (body) {
+                    //判断body是否合法
+                    if (body.id && body.id > 0) {
+                        //登录成功
+                        console.log("用户已经成功 用户名:" + body.name);
+                    } else {
+                        //跳转到登录页面
+                        alert("请登录后访问");
+                        location.assign("/MangeSystem/log.html");
+                    }
+                },
+                error: function () {
+                    //跳转到登录页面
+                    location.assign("/ManegeSystem/log.html");
+                },
+            });
+        }
+        getUserInfo();
+
         function calculateBalance() {
             const income = parseFloat(document.getElementById('income').value);
             const expense = parseFloat(document.getElementById('expense').value);
@@ -140,7 +164,6 @@
         // 将日期填充到输入框中
         const dateInput = document.getElementById('date');
         dateInput.value = formattedDate;
-
         // 获取数据并绘制图表
         fetch('/MangeSystem/chart')
             .then(response => response.json())

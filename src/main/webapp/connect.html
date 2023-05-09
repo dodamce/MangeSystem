@@ -96,6 +96,8 @@
     }
 </style>
 
+<script src="./js/log.js"></script>
+
 <body>
     <h1>企业消息通知群</h1>
     <div id="messages"></div>
@@ -109,6 +111,7 @@
     </form>
     <script src="./js/jquery.min.js"></script>
     <script>
+        getUserInfo("connect.html");
         $(function () {
             function loadMessages() {
                 $.get('/MangeSystem/message', function (data) {
