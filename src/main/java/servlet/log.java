@@ -24,6 +24,7 @@ public class log extends HttpServlet {
         // 设置响应解析编码
         req.setCharacterEncoding("utf8");
         resp.setCharacterEncoding("utf8");
+        System.out.println(req.getRemoteAddr());
         // 获取请求参数，和数据库的内容进行比较，比较成功创建会话
         String name = req.getParameter("name");
         String password = req.getParameter("password");
@@ -43,7 +44,7 @@ public class log extends HttpServlet {
         LogTimeDAO logTimeDAO = new LogTimeDAO();
         FrozenDAO frozenDAO = new FrozenDAO();
 
-        if (user == null || frozenDAO.find(name) != null) {
+        if (user == null && frozenDAO.find(name) != null) {
             // 没有这个人或密码不匹配
             LogTime tmp = logTimeDAO.selectByname(name);
             int curtime = tmp.getLogtimes();

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>操作信息文档</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #F6F6F6;
+        }
+
+        .msg {
+            margin: 50px auto;
+            max-width: 1500px;
+            padding: 20px;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .msg div {
+            margin-bottom: 10px;
+        }
+
+        .msg div span {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .logTag span {
+            color: #666666;
+        }
+
+        .nameTag span {
+            color: #333333;
+        }
+
+        .viewTag span {
+            color: #333333;
+        }
+
+        .ipTag span {
+            color: #333333;
+        }
+
+        .do span {
+            color: #333333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="msg">
+        <div class="logTag">
+            登录时间：<span id="time">2023年5月11日</span>
+        </div>
+        <div class="nameTag">
+            登录用户：<span id="name">root</span>
+        </div>
+        <div class="viewTag">
+            浏览器信息：<span id="viewMsg">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)
+                Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.35</span>
+        </div>
+        <div class="ipTag">
+            用户ip地址：<span id="ip">127.0.0.1</span>
+        </div>
+        <div class="do">
+            用户操作：<span id="do">log.html->index.html->log.html->index.html->msg.html</span>
+        </div>
+        <br>
+    </div>
+</body>
+
+<script>
+    var data = [
+        {
+            "time": "2023年5月11日",
+            "name": "root",
+            "viewMsg": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.35",
+            "ip": "127.0.0.1",
+            "do": "log.html->index.html->msg.html"
+        },
+        {
+            "time": "2023年5月11日",
+            "name": "guest",
+            "viewMsg": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.35",
+            "ip": "127.0.0.1",
+            "do": "log.html->index.html->chat.html",
+        },
+        {
+            "time": "2023年5月11日",
+            "name": "admin",
+            "viewMsg": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.35",
+            "ip": "127.0.0.1",
+            "do": "log.html->index.html->goods.html->index.html",
+        }
+    ];
+
+    window.onload = function () {
+        var msgDiv = document.querySelector('.msg');
+        if (msgDiv) {
+            for (var i = 0; i < data.length; i++) {
+                var user = data[i];
+                var logTag = document.createElement('div');
+                logTag.className = 'logTag';
+                logTag.innerHTML = '登录时间：<span>' + user.time + '</span>';
+                var nameTag = document.createElement('div');
+                nameTag.className = 'nameTag';
+                nameTag.innerHTML = '登录用户：<span>' + user.name + '</span>';
+                var viewTag = document.createElement('div');
+                viewTag.className = 'viewTag';
+                viewTag.innerHTML = '浏览器信息：<span>' + user.viewMsg + '</span>';
+                var ipTag = document.createElement('div');
+                ipTag.className = 'ipTag';
+                ipTag.innerHTML = '用户ip地址：<span>' + user.ip + '</span>';
+
+                var doTag = document.createElement('div');
+                doTag.className = 'do';
+                doTag.innerHTML = '用户操作：<span>' + user.do + '<br>' + '</span><br><br>';
+                msgDiv.appendChild(logTag);
+                msgDiv.appendChild(nameTag);
+                msgDiv.appendChild(viewTag);
+                msgDiv.appendChild(ipTag);
+                msgDiv.appendChild(doTag)
+            }
+        }
+    };
+
+
+</script>
+
+</html>

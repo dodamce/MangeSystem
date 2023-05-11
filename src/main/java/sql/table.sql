@@ -79,9 +79,26 @@ create table frozentable
 drop table if exists keyValid;
 create table keyValid
 (
-    name   varchar(20),
-    oldkey varchar(20),
-    newkey varchar(20),
+    name     varchar(20),
+    oldkey   varchar(20),
+    newkey   varchar(20),
+    modeTime datetime
+);
+drop table if exists userMsg;
+create table userMsg
+(
+    id           int,
+    ipAddress    varchar(20),
+    os           varchar(20),
+    device       varchar(20), -- 用户使用的浏览器信息
+    networkSpeed int,
+    time         datetime     -- 登录时间
+);
+
+drop table if exists IP;
+create table IP
+(
+    ip varchar(20)
 );
 
 insert into user
