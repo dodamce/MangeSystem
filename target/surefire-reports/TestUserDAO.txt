@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: TestUserDAO
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s - in TestUserDAO
+Tests run: 5, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.068 s <<< FAILURE! - in TestUserDAO
+testGetAllUser(TestUserDAO)  Time elapsed: 0.004 s  <<< FAILURE!
+java.lang.AssertionError: expected:<2> but was:<3>
+	at TestUserDAO.testGetAllUser(TestUserDAO.java:43)
+

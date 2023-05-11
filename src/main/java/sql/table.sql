@@ -57,6 +57,33 @@ create table msg
     message varchar(20)
 ) char set utf8;
 
+# 用户登录次数记录表
+drop table if exists logTimes;
+create table logTimes
+(
+    id       int,
+    name     varchar(20),
+    logtimes int
+) char set utf8;
+
+#冻结登录表
+drop table if exists frozentable;
+create table frozentable
+(
+    id       int,
+    name     varchar(20),
+    postTime datetime
+) char set utf8;
+
+#失效密码设置
+drop table if exists keyValid;
+create table keyValid
+(
+    name   varchar(20),
+    oldkey varchar(20),
+    newkey varchar(20),
+);
+
 insert into user
 values (null, 'root', '000000');
 insert into user

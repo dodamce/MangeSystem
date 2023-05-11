@@ -81,7 +81,7 @@
         }
     </style>
 </head>
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 
 <body>
     <div class="container">
@@ -115,6 +115,29 @@
         </table>
     </div>
     <script>
+        //获取登录状态
+        function getUserInfo() {
+            $.ajax({
+                type: "GET",
+                url: "/MangeSystem/log",
+                success: function (body) {
+                    //判断body是否合法
+                    if (body.id && body.id > 0) {
+                        //登录成功
+                        console.log("用户已经成功 用户名:" + body.name);
+                    } else {
+                        //跳转到登录页面
+                        alert("请登录后访问");
+                        location.assign("/MangeSystem/log.html");
+                    }
+                },
+                error: function () {
+                    //跳转到登录页面
+                    location.assign("/ManegeSystem/log.html");
+                },
+            });
+        }
+        getUserInfo();
         // 添加货物并刷新表格
         function addGoods() {
             // 获取表单数据

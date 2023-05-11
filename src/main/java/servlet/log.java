@@ -1,8 +1,7 @@
 package servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import sql.User;
-import sql.UserDAO;
+import sql.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,8 +40,19 @@ public class log extends HttpServlet {
         }
         UserDAO user_dao = new UserDAO();
         User user = user_dao.SelectByName(name);
-        if (user == null) {
+        LogTimeDAO logTimeDAO = new LogTimeDAO();
+        FrozenDAO frozenDAO = new FrozenDAO();
+
+        if (user == null || frozenDAO.find(name) != null) {
             // 没有这个人或密码不匹配
+            LogTime tmp = logTimeDAO.selectByname(name);
+            int curtime = tmp.getLogtimes();
+            if (curtime == 0) {
+                frozenDAO.insert(name);
+                resp.setContentType("text/html; charset=utf8");
+                resp.getWriter().write("用户名今日登录错误次数过多，已被冻结");
+            }
+            tmp.setLogtimes(curtime);
             resp.setContentType("text/html; charset=utf8");
             resp.getWriter().write("用户名不存在");
             return;
@@ -50,7 +60,7 @@ public class log extends HttpServlet {
         if (!password.equals(user.getPassword())) {
             // 没有这个人或密码不匹配
             resp.setContentType("text/html; charset=utf8");
-            resp.getWriter().write("密码错误" + password);
+            resp.getWriter().write("密码错误,您输入的密码为:" + password);
             return;
         }
         // 创建会话

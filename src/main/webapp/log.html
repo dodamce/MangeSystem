@@ -116,8 +116,18 @@
         // 获取密码输入框
         const passwordInput = document.getElementById("password");
 
+        // 定义密码格式的正则表达式
+        const passwordPattern = /^[a-zA-Z0-9]+$/;
+
         // 获取输入的密码字符串
         const password = passwordInput.value;
+        // 检查密码格式是否正确
+        const isPasswordValid = passwordPattern.test(password);
+        // 如果密码格式不正确，则弹出提示框
+        if (!isPasswordValid) {
+            alert("密码格式不正确！请使用数字和大小写字母组合。");
+            return;
+        }
 
         // // 使用 SHA-256 哈希算法对密码进行加密
         // const hashedPassword = sha256(password);
